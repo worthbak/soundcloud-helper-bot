@@ -6,6 +6,7 @@ var command_token_soundcloudid =  'CJBWPKusyIjbGdIg8PlwGKuk'
 
 var https = require('https');
 var bodyParser = require('body-parser');
+var request = require("request");
 var express = require('express');
 var app = express();
 
@@ -14,17 +15,34 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
   extended: true
 }));
 
-// https://slack.com/api/oauth.access
-  //?client_id=29366941763.35077834212
-  //&client_secret=a804488b71b37a7940079c880529e0a7
-  //&code=4397439734.35093715350.2ef584e4b2
-  //&redirect_uri=https://delegateself.com/soundcloudhelperbot/auth
-
 // https://delegateself.com/soundcloudhelper/id
 app.post('/soundcloudhelperbot/id', function(req, res) {
   var token = req.body.token; // verify the token
-  var text = req.body.text;
-  res.send('hiiii! ' + text);
+  if (token !== command_token_soundcloudid) {
+    res.status(401);
+    res.end();
+    return;
+  }
+
+  var soundcloudURL = req.body.text;
+  var options = { method: 'POST',
+  url: 'https://delegateself.com/soundcloud/json',
+  headers:
+   { 'content-type': 'application/x-www-form-urlencoded',
+     'postman-token': 'dc9e1ca4-632a-1fed-a11e-77aca03b1c46',
+     'cache-control': 'no-cache' },
+  form: { soundcloudURL: soundcloudURL } };
+
+  request(options, function (error, response, body) {
+    if (error) {
+      res.status(500);
+      res.send('Crud! An error occurred. Maybe check your URL?');
+    };
+
+    var parsedBody = JSON.parse(body);
+    res.status(200);
+    res.send('SoundCloud Track ID = ' + parsedBody.trackID);
+  });
 
 });
 
@@ -72,4 +90,6 @@ app.get('/soundcloudhelperbot/auth', function(req, res) {
 
 });
 
-app.listen(6700);
+app.listen(6700, function() {
+  console.log('listening on 6700');
+});
