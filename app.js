@@ -42,7 +42,7 @@ app.post('/soundcloudhelperbot/id', function(req, res) {
     try {
       var parsedBody = JSON.parse(body);
 
-      if (!parsedBody) {
+      if (!parsedBody.trackID) {
         res.status(500);
         res.send('Oh no! An error occurred. Maybe check your URL?');
       } else {
