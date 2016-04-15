@@ -1,0 +1,25 @@
+{
+  "name": "soundcloud-helper-bot",
+  "version": "1.0.0",
+  "description": "A Slack bot for getting SoundCloud information. ",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/worthbak/soundcloud-helper-bot.git"
+  },
+  "keywords": [
+    "slack"
+  ],
+  "author": "Worth Baker",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/worthbak/soundcloud-helper-bot/issues"
+  },
+  "homepage": "https://github.com/worthbak/soundcloud-helper-bot#readme",
+  "dependencies": {
+    "express": "^4.13.4"
+  }
+}
