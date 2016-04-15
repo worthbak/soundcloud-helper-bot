@@ -1,14 +1,12 @@
 'use strict';
 
-var client_id =      '29366941763.35077834212'
-var client_secret =  'a804488b71b37a7940079c880529e0a7'
-var command_token_soundcloudid =  'CJBWPKusyIjbGdIg8PlwGKuk'
-
 var https = require('https');
 var bodyParser = require('body-parser');
 var request = require("request");
 var express = require('express');
 var app = express();
+
+var config = require('./config');
 
 app.use(bodyParser.json() );       // to support JSON-encoded bodies
 app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
@@ -18,7 +16,7 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 // https://delegateself.com/soundcloudhelper/id
 app.post('/soundcloudhelperbot/id', function(req, res) {
   var token = req.body.token; // verify the token
-  if (token !== command_token_soundcloudid) {
+  if (token !== config.command_token_soundcloudid) {
     res.status(401);
     res.end();
     return;
@@ -64,9 +62,9 @@ app.post('/soundcloudhelperbot/id', function(req, res) {
 // auth //
 app.get('/soundcloudhelperbot/auth', function(req, res) {
   // sent an auth request
-  var code = req.params.code
-  var constructedPath = '/api/oauth.access?client_id=' + client_id
-    + '&client_secret=' + client_secret
+  var code = req.query.code
+  var constructedPath = '/api/oauth.access?client_id=' + config.client_id
+    + '&client_secret=' + config.client_secret
     + '&code=' + code
     + '&redirect_uri' + 'https://delegateself.com/soundcloudhelperbot/auth'
 
