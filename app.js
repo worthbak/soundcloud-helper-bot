@@ -36,12 +36,27 @@ app.post('/soundcloudhelperbot/id', function(req, res) {
   request(options, function (error, response, body) {
     if (error) {
       res.status(500);
-      res.send('Crud! An error occurred. Maybe check your URL?');
+      res.send('Crud! An error occurred.');
     };
 
-    var parsedBody = JSON.parse(body);
-    res.status(200);
-    res.send('SoundCloud Track ID = ' + parsedBody.trackID);
+    try {
+      var parsedBody = JSON.parse(body);
+
+      if (!parsedBody) {
+        res.status(500);
+        res.send('Oh no! An error occurred. Maybe check your URL?');
+      } else {
+        res.status(200);
+        res.send('SoundCloud Track ID = ' + parsedBody.trackID);
+      }
+
+    } catch (e) {
+      console.log(body);
+      console.error(e.stack);
+      res.status(500);
+      res.send('error!');
+    }
+
   });
 
 });
